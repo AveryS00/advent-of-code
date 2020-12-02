@@ -1,7 +1,5 @@
-# Sloppy but quick to type
 
-"""
-def valid_password(string):
+def valid_password_p1(string):
     string = string.split(' ')
     string[1] = string[1].replace(':', '')
     string[0] = string[0].split('-')
@@ -9,28 +7,25 @@ def valid_password(string):
     for j in string[2]:
         if j == string[1]:
             num_occurrences += 1
-    if int(string[0][0]) <= num_occurrences <= int(string[0][1]):
-        return True
-"""
+    return int(string[0][0]) <= num_occurrences <= int(string[0][1])
 
 
 def valid_password(string):
     string = string.split(' ')
     string[1] = string[1].replace(':', '')
     string[0] = string[0].split('-')
-    if string[2][int(string[0][0]) - 1] == string[1]:
-        if string[2][int(string[0][1]) - 1] == string[1]:
-            return False
-        return True
-    elif string[2][int(string[0][1]) - 1] == string[1]:
-        return True
-    return False
+    return (string[2][int(string[0][0]) - 1] == string[1]) ^ (string[2][int(string[0][1]) - 1] == string[1])
 
 
 with open('input.txt') as f:
-    arr = f.readlines()
-    count = 0
-    for i in arr:
-        if valid_password(i):
-            count += 1
-    print('Number of valid passwords: ' + str(count))
+    arr = [line.rstrip('\n') for line in f]
+
+count = 0
+for i in arr:
+    count += valid_password_p1(i)
+print('Number of valid passwords (Part 1): {}'.format(count))
+
+count = 0
+for i in arr:
+    count += valid_password(i)
+print('Number of valid passwords (Part 2): {}'.format(count))
