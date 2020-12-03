@@ -4,7 +4,7 @@ from math import ceil
 def num_trees(delta_x, delta_y, tree_map):
     width = len(tree_map[0])
     depth = len(tree_map)
-    full_map = [ceil(delta_x * (depth/delta_y) / width) * line for line in arr]
+    full_map = [ceil(delta_x * depth / delta_y / width) * line for line in tree_map]
 
     x_pos = 0
     y_pos = 0
