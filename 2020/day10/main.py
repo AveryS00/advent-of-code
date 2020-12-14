@@ -1,5 +1,16 @@
-from typing import List
+from typing import List, Dict
 from math import comb
+
+
+def compute_diffs(adapters: List[int]) -> Dict[int, int]:
+    diffs = {}
+    for i in adapters[:-1]:
+        diffs[i] = -1
+        for j in range(1, 4):
+            if i + j in adapters:
+                diffs[i] += 1
+    diffs[adapters[-1]] = 0
+    return diffs
 
 
 def find_largest_diff(current_adapter, adapters, totals):
@@ -26,12 +37,20 @@ def find_total_diff_small(adapters: List[int]) -> List[int]:
     return totals
 
 
-def compute_combinations(totals: List[int], num_adapters: int) -> int:
-    num_left = num_adapters - totals[0] - totals[1] - totals[2]
+def compute_combinations(totals: List[int], adapters: List[int]) -> int:
+    num_left = len(adapters) - totals[0] - totals[1] - totals[2]
     combs = 0
-    for i in range(num_left + 2):
-        combs += comb(num_left + 1, i)
-    return combs
+    for i in range(num_left + 1):
+        combs += comb(num_left, i)
+
+    #  No
+    adapters.sort()
+    diffs = compute_diffs(adapters)
+    two_diffs = 0
+    for i in range(len((vals := list(diffs.values()))) - 1):
+        two_diffs += (vals[i] == 2)
+        two_diffs += (vals[i] == 1 and vals[i+1] == 1)
+    return combs * two_diffs
 
 
 def find_total_diff_large(adapters: List[int]) -> List[int]:
@@ -58,4 +77,4 @@ print(result[0]*result[2])
 # Let n = number of adapters, Let k = length of shortest adapter chain. Then the answer is the summation from
 # i = 0 -> k of k choose i.
 result2 = find_total_diff_large(arr)
-print(compute_combinations(result2, len(arr)))
+print(compute_combinations(result2, arr))
