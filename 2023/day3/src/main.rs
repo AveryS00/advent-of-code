@@ -1,3 +1,5 @@
 fn main() {
-    println!("Hello, world!");
+    let f_in = "input.txt";
+    let result = day3::run(f_in);
+    println!("Final sum: {result}");
 }
